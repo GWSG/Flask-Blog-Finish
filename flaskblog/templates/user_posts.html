@@ -1,0 +1,55 @@
+{% extends "layout.html" %}  
+<!-- 繼承 layout.html 模板，利用主模板的標題和導航欄等通用結構 -->
+
+{% block content %}  
+<!-- 開始定義填充主模板的 content 區塊 -->
+
+    <!-- 顯示用戶名和該用戶的總帖子數 -->
+    <h1 class="mb-3">Posts by {{ user.username }} ({{ posts.total }})</h1>
+    <!-- 標題顯示當前查看的用戶名，並用括號顯示該用戶發表的帖子總數 -->
+
+    <!-- 遍歷顯示每一篇帖子 -->
+    {% for post in posts.items %}
+        <article class="media content-section">
+            <!-- 顯示作者的頭像 -->
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+            <!-- 使用靜態文件的路徑顯示作者頭像，頭像是圓形圖片 -->
+            
+            <div class="media-body">
+                <div class="article-metadata">
+                    <!-- 顯示作者的用戶名，並將其作為超鏈接，指向該作者的所有帖子頁面 -->
+                    <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+                    <!-- 顯示該帖子的發布日期，格式為 YYYY-MM-DD -->
+                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+                
+                <!-- 顯示帖子標題，並將其作為超鏈接，指向該帖子的詳細頁面 -->
+                <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                
+                <!-- 顯示帖子的內容 -->
+                <p class="article-content">{{ post.content }}</p>
+                <!-- 顯示帖子全文內容，未設置摘要，因此直接顯示完整內容 -->
+            </div>
+        </article>
+    {% endfor %}
+    <!-- 結束對 posts.items 列表的遍歷，顯示所有帖子 -->
+
+    <!-- 分頁控制 -->
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        <!-- 遍歷所有分頁編號，使用 iter_pages 動態生成頁碼範圍 -->
+        {% if page_num %}
+            {% if posts.page == page_num %}
+                <!-- 當前頁面按鈕，高亮顯示 -->
+                <a class="btn btn-info mb-4" href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+                <!-- 其他頁面的分頁按鈕 -->
+                <a class="btn btn-outline-info mb-4" href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
+            {% endif %}
+        {% else %}
+            <!-- 顯示省略符號 "..." 用於分頁中間的間隔 -->
+            ...
+        {% endif %}
+    {% endfor %}
+    <!-- 結束分頁按鈕的生成 -->
+{% endblock content %}
+<!-- 結束 content 區塊定義 -->

@@ -1,0 +1,77 @@
+{% extends "layout.html" %}  
+<!-- 繼承主模板 layout.html，利用主模板提供的標題和導航欄等結構 -->
+
+{% block content %}  
+<!-- 定義 content 區塊，填充具體的內容 -->
+
+    <div class="content-section">  
+    <!-- 使用 Bootstrap 的樣式設計表單區域 -->
+    
+        <!-- 定義表單，提交方法為 POST，action 留空表示提交至當前頁面 -->
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}  
+            <!-- 隱藏 CSRF 防護標籤，用於保護跨站請求偽造攻擊 -->
+
+            <!-- 表單區域標題 -->
+            <fieldset class="form-group">  
+            <!-- 群組表單字段，並添加邊框和標題 -->
+                <legend class="border-bottom mb-4">Reset Password</legend>  
+                <!-- 顯示表單的標題，表示當前頁面用於重設密碼 -->
+
+                <!-- 密碼字段 -->
+                <div class="form-group">
+                    {{ form.password.label(class="form-control-label") }}  
+                    <!-- 顯示密碼字段的標籤 -->
+
+                    {% if form.password.errors %}  
+                    <!-- 如果密碼字段有錯誤 -->
+                        {{ form.password(class="form-control form-control-lg is-invalid") }}  
+                        <!-- 顯示帶有錯誤樣式的輸入框 -->
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}  
+                            <!-- 遍歷所有錯誤訊息 -->
+                                <span>{{ error }}</span>  
+                                <!-- 顯示單個錯誤訊息 -->
+                            {% endfor %}
+                        </div>
+                    {% else %}  
+                    <!-- 如果沒有錯誤 -->
+                        {{ form.password(class="form-control form-control-lg") }}  
+                        <!-- 顯示正常樣式的輸入框 -->
+                    {% endif %}
+                </div>
+
+                <!-- 確認密碼字段 -->
+                <div class="form-group">
+                    {{ form.confirm_password.label(class="form-control-label") }}  
+                    <!-- 顯示確認密碼字段的標籤 -->
+
+                    {% if form.confirm_password.errors %}  
+                    <!-- 如果確認密碼字段有錯誤 -->
+                        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}  
+                        <!-- 顯示帶有錯誤樣式的輸入框 -->
+                        <div class="invalid-feedback">
+                            {% for error in form.confirm_password.errors %}  
+                            <!-- 遍歷所有錯誤訊息 -->
+                                <span>{{ error }}</span>  
+                                <!-- 顯示單個錯誤訊息 -->
+                            {% endfor %}
+                        </div>
+                    {% else %}  
+                    <!-- 如果沒有錯誤 -->
+                        {{ form.confirm_password(class="form-control form-control-lg") }}  
+                        <!-- 顯示正常樣式的輸入框 -->
+                    {% endif %}
+                </div>
+            </fieldset>
+
+            <!-- 提交按鈕 -->
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}  
+                <!-- 顯示提交按鈕，使用 Bootstrap 的 "outline-info" 樣式 -->
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}  
+<!-- 結束 content 區塊 -->

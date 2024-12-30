@@ -1,0 +1,104 @@
+{% extends "layout.html" %}  
+<!-- 繼承主模板 layout.html，使用其通用結構如標題和導航欄 -->
+
+{% block content %}  
+<!-- 定義 content 區塊，填充具體頁面內容 -->
+
+    <!-- 用戶帳戶資訊區塊 -->
+    <div class="content-section">  
+    <!-- 使用 Bootstrap 樣式設計內容區域 -->
+
+        <!-- 用戶媒體對齊區塊 -->
+        <div class="media">  
+        <!-- 使用 media 類設計，包含頭像和基本資訊 -->
+            <img class="rounded-circle account-img" src="{{ image_file }}" alt="User Image">  
+            <!-- 顯示用戶頭像，圖片來源由變數提供，並設為圓形樣式 -->
+            
+            <div class="media-body">  
+            <!-- 包含用戶名和郵箱地址的區域 -->
+                <h2 class="account-heading">{{ current_user.username }}</h2>  
+                <!-- 用戶名作為標題顯示 -->
+                <p class="text-secondary">{{ current_user.email }}</p>  
+                <!-- 用戶郵箱以次要文字樣式顯示 -->
+            </div>
+        </div>
+
+        <!-- 用戶帳戶更新表單 -->
+        <form method="POST" action="" enctype="multipart/form-data">  
+        <!-- 表單提交方式為 POST，支持文件上傳 -->
+            {{ form.hidden_tag() }}  
+            <!-- CSRF 防護標籤，保護表單安全性 -->
+
+            <fieldset class="form-group">  
+            <!-- 使用 fieldset 分組表單內容 -->
+                <legend class="border-bottom mb-4">Account Info</legend>  
+                <!-- 表單標題，描述當前操作內容 -->
+
+                <!-- 用戶名輸入欄位 -->
+                <div class="form-group">  
+                    {{ form.username.label(class="form-control-label") }}  
+                    <!-- 用戶名字段標籤 -->
+
+                    {% if form.username.errors %}  
+                    <!-- 如果用戶名字段有錯誤 -->
+                        {{ form.username(class="form-control form-control-lg is-invalid") }}  
+                        <!-- 顯示錯誤樣式的輸入框 -->
+                        <div class="invalid-feedback">  
+                            {% for error in form.username.errors %}  
+                            <!-- 遍歷並顯示所有錯誤訊息 -->
+                                <span>{{ error }}</span>  
+                            {% endfor %}
+                        </div>
+                    {% else %}  
+                        {{ form.username(class="form-control form-control-lg") }}  
+                        <!-- 顯示正常樣式的輸入框 -->
+                    {% endif %}
+                </div>
+
+                <!-- 郵箱輸入欄位 -->
+                <div class="form-group">  
+                    {{ form.email.label(class="form-control-label") }}  
+                    <!-- 郵箱字段標籤 -->
+
+                    {% if form.email.errors %}  
+                    <!-- 如果郵箱字段有錯誤 -->
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}  
+                        <!-- 顯示錯誤樣式的輸入框 -->
+                        <div class="invalid-feedback">  
+                            {% for error in form.email.errors %}  
+                                <span>{{ error }}</span>  
+                            {% endfor %}
+                        </div>
+                    {% else %}  
+                        {{ form.email(class="form-control form-control-lg") }}  
+                        <!-- 顯示正常樣式的輸入框 -->
+                    {% endif %}
+                </div>
+
+                <!-- 頭像上傳欄位 -->
+                <div class="form-group">  
+                    {{ form.picture.label() }}  
+                    <!-- 頭像字段標籤 -->
+                    {{ form.picture(class="form-control-file") }}  
+                    <!-- 文件上傳輸入框 -->
+
+                    {% if form.picture.errors %}  
+                    <!-- 如果頭像字段有錯誤 -->
+                        {% for error in form.picture.errors %}  
+                        <!-- 顯示每個錯誤訊息 -->
+                            <span class="text-danger">{{ error }}</span><br>  
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </fieldset>
+
+            <!-- 提交按鈕 -->
+            <div class="form-group">  
+                {{ form.submit(class="btn btn-outline-info") }}  
+                <!-- 使用 Bootstrap 樣式的提交按鈕 -->
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}  
+<!-- 結束 content 區塊 -->

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+    <!-- 遍歷並顯示所有帖子 -->
+    {% for post in posts.items %}
+        <article class="media content-section">
+            <!-- 作者的頭像圖片 -->
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+            <div class="media-body">
+                <!-- 文章元數據區塊，包括作者名稱和發布日期 -->
+                <div class="article-metadata">
+                    <!-- 作者名稱，作為連結指向該作者的所有帖子 -->
+                    <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+                    <!-- 顯示作者名稱並鏈接到該用戶的所有文章頁面 -->
+                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                     <!-- 顯示文章發佈日期，格式為 YYYY-MM-DD -->
+                </div>
+                <!-- 文章標題，作為連結指向該帖子的詳細頁面 -->
+                <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                <!-- 文章內容 -->
+                <p class="article-content">{{ post.content }}</p>
+            </div>
+        </article>
+    {% endfor %}
+
+    <!-- 分頁控制 -->
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if posts.page == page_num %}
+                <!-- 當前頁面使用實心按鈕表示 -->
+                <a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+                <!-- 如果是當前頁，顯示為藍色主題按鈕 -->
+            {% else %}
+                <!-- 非當前頁面使用輪廓按鈕表示 -->
+                <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+                <!-- 如果不是當前頁，顯示為邊框按鈕 -->
+            {% endif %}
+        {% else %}
+            <!-- 顯示省略符號表示中間頁碼被省略 -->
+            ...
+             <!-- 如果頁碼範圍中存在間隔，用省略號表示 -->
+        {% endif %}
+    {% endfor %} <!-- 結束分頁按鈕的遍歷 -->
+{% endblock content %} <!-- 結束內容區塊 -->

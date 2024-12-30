@@ -1,0 +1,112 @@
+{% extends "layout.html" %}  
+<!-- 繼承主模板 layout.html，利用其通用結構如標題和導航欄 -->
+
+{% block content %}  
+<!-- 開始定義 content 區塊，填充頁面的具體內容 -->
+
+    <div class="content-section">  
+    <!-- 使用 Bootstrap 的樣式設計表單區域 -->
+
+        <!-- 定義表單，提交方法為 POST，action 留空表示提交至當前頁面 -->
+        <form method="POST" action="">  
+            <!-- CSRF 保護隱藏字段 -->
+            {{ form.hidden_tag() }}  
+            <!-- 插入隱藏標籤，用於防範跨站請求偽造攻擊 -->
+
+            <!-- 表單標題 -->
+            <fieldset class="form-group">  
+            <!-- 群組表單字段，並添加標題 -->
+                <legend class="border-bottom mb-4">Join Today</legend>  
+                <!-- 標題部分，表明此表單用於註冊 -->
+
+                <!-- 用戶名字段 -->
+                <div class="form-group">  
+                <!-- 定義用戶名輸入框的容器 -->
+                    {{ form.username.label(class="form-control-label") }}  
+                    <!-- 顯示用戶名字段的標籤 -->
+
+                    {% if form.username.errors %}  
+                    <!-- 如果用戶名字段有錯誤 -->
+                        {{ form.username(class="form-control form-control-lg is-invalid") }}  
+                        <!-- 顯示帶有錯誤樣式的輸入框 -->
+                        <div class="invalid-feedback">  
+                        <!-- 錯誤訊息容器 -->
+                            {% for error in form.username.errors %}  
+                            <!-- 遍歷所有錯誤訊息 -->
+                                <span>{{ error }}</span>  
+                                <!-- 顯示單個錯誤訊息 -->
+                            {% endfor %}
+                        </div>
+                    {% else %}  
+                    <!-- 如果沒有錯誤 -->
+                        {{ form.username(class="form-control form-control-lg") }}  
+                        <!-- 顯示正常樣式的輸入框 -->
+                    {% endif %}
+                </div>
+
+                <!-- 郵箱字段 -->
+                <div class="form-group">  
+                    {{ form.email.label(class="form-control-label") }}  
+                    {% if form.email.errors %}  
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}  
+                        <div class="invalid-feedback">  
+                            {% for error in form.email.errors %}  
+                                <span>{{ error }}</span>  
+                            {% endfor %}
+                        </div>
+                    {% else %}  
+                        {{ form.email(class="form-control form-control-lg") }}  
+                    {% endif %}
+                </div>
+
+                <!-- 密碼字段 -->
+                <div class="form-group">  
+                    {{ form.password.label(class="form-control-label") }}  
+                    {% if form.password.errors %}  
+                        {{ form.password(class="form-control form-control-lg is-invalid") }}  
+                        <div class="invalid-feedback">  
+                            {% for error in form.password.errors %}  
+                                <span>{{ error }}</span>  
+                            {% endfor %}
+                        </div>
+                    {% else %}  
+                        {{ form.password(class="form-control form-control-lg") }}  
+                    {% endif %}
+                </div>
+
+                <!-- 確認密碼字段 -->
+                <div class="form-group">  
+                    {{ form.confirm_password.label(class="form-control-label") }}  
+                    {% if form.confirm_password.errors %}  
+                        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}  
+                        <div class="invalid-feedback">  
+                            {% for error in form.confirm_password.errors %}  
+                                <span>{{ error }}</span>  
+                            {% endfor %}
+                        </div>
+                    {% else %}  
+                        {{ form.confirm_password(class="form-control form-control-lg") }}  
+                    {% endif %}
+                </div>
+            </fieldset>
+
+            <!-- 提交按鈕 -->
+            <div class="form-group">  
+                {{ form.submit(class="btn btn-outline-info") }}  
+                <!-- 顯示註冊按鈕，使用 Bootstrap 樣式 -->
+            </div>
+        </form>
+    </div>
+
+    <!-- 登錄提示區域 -->
+    <div class="border-top pt-3">  
+    <!-- 分隔線與登錄提示 -->
+        <small class="text-muted">  
+        <!-- 顯示小字體的提示 -->
+            Already Have An Account? <a class="ml-2" href="{{ url_for('users.login') }}">Sign In</a>  
+            <!-- 如果已有帳號，提供登入頁面的鏈接 -->
+        </small>
+    </div>
+
+{% endblock content %}  
+<!-- 結束 content 區塊 -->
